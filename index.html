@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ori Fogler</title>
+    <link rel="icon" href="IMG_7036.jpg" type="image/jpeg"> <!-- Specify the path to your image and its type -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +29,12 @@
         .blog-link, .email-link {
             color: #007bff;
         }
+        .profile-img {
+            max-width: 100%; /* Ensure the image doesn't exceed the container width */
+            height: auto; /* Maintain the aspect ratio */
+            border-radius: 50%; /* Rounded corners for circular image */
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -37,29 +44,27 @@
 </header>
 
 <div class="container">
-    <img src="IMG_7036.jpg" alt="Ori Fogler" class="profile-img">
+    <img src="IMG_7036.jpg" alt="Ori Fogler" class="profile-img" width="200"> <!-- Adjust the width attribute as needed -->
     <p>Welcome to my homepage! My name is Ori Fogler.</p>
     <p>Find me on LinkedIn: <a href="https://www.linkedin.com/in/foglero/">LinkedIn Profile</a></p>
     <p>Check out my blog: <a href="https://hagigey.blogspot.com/" class="blog-link">Hagigey Blog</a></p>
     <p>Contact me at: <a href="mailto:foglerori@gmail.com" class="email-link">foglerori@gmail.com</a></p>
-    <div id="latest-post"></div>
+    <div id="blog-post"></div>
 </div>
 
 <script>
-    // Fetch the latest blog post from the RSS feed
-    fetch('https://hagigey.blogspot.com/feeds/posts/default')
+    // Fetch the specific blog post content
+    fetch('https://hagigey.blogspot.com/2022/10/blog-post.html')
     .then(response => response.text())
-    .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
-    .then(data => {
-        const items = data.querySelectorAll('item');
-        const latestPost = items[0];
-        const title = latestPost.querySelector('title').textContent;
-        const link = latestPost.querySelector('link').textContent;
-        document.getElementById('latest-post').innerHTML = `<h2>Latest Blog Post:</h2><a href="${link}">${title}</a>`;
+    .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const postContent = doc.querySelector('.post-body');
+        document.getElementById('blog-post').appendChild(postContent);
     })
     .catch(error => {
         console.error('Error fetching blog post:', error);
-        document.getElementById('latest-post').innerHTML = '<p>Error fetching latest blog post. Please try again later.</p>';
+        document.getElementById('blog-post').innerHTML = '<p>Error fetching blog post. Please try again later.</p>';
     });
 </script>
 
