@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Petah Tikva Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 600px;
+    }
+
+    .input-container {
+      width: 20%;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f0f0f0;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    label {
+      width: 50%;
+      border-radius: 5px;
+    }
+
+    input[type="number"] {
+      width: 30%;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    button {
+      width: 90%;
+      padding: 10px 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+      <div class="input-container">
+        <label for="numPoints">Number of Points:</label>
+        <input type="number" id="numPoints" min="1" value="10">
+        <button onclick="samplePoints()">Sample Points</button>
+        <button onclick="calculateShortestTour()">Calculate Shortest Tour</button>
+      </div>
+      <div id="map"></div>
+    </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('map').setView([32.0886, 34.885], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var markers = L.layerGroup().addTo(map);
+    var lines = L.layerGroup().addTo(map);
+
+    var sampledPoints = [];
+    var shortestTour = [];
+
+    function samplePoints() {
+      markers.clearLayers();
+      lines.clearLayers();
+
+      var numPoints = parseInt(document.getElementById('numPoints').value);
+
+      sampledPoints = [];
+
+      for (var i = 0; i < numPoints; i++) {
+        var lat = 32.0886 + (Math.random() - 0.5) * 0.05;
+        var lng = 34.885 + (Math.random() - 0.5) * 0.05;
+        var marker = L.marker([lat, lng]).addTo(markers);
+        sampledPoints.push(marker.getLatLng());
+      }
+    }
+
+    function calculateShortestTour() {
+      if (sampledPoints.length < 2) {
+        alert("Please sample at least 2 points.");
+        return;
+      }
+
+      var tspSolver = new SimpleTSPSolver();
+      shortestTour = tspSolver.solve(sampledPoints);
+
+      lines.clearLayers();
+
+      var line = L.polyline(shortestTour.concat([shortestTour[0]]), {color: 'red'}).addTo(lines);
+      map.fitBounds(line.getBounds());
+    }
+
+    // Simple TSP solver using brute force
+    function SimpleTSPSolver() {
+      this.solve = function(points) {
+        var permutations = getPermutations(points);
+        var shortestDistance = Number.MAX_SAFE_INTEGER;
+        var shortestPath = [];
+
+        for (var i = 0; i < permutations.length; i++) {
+          var path = permutations[i];
+          var distance = calculatePathDistance(path);
+
+          if (distance < shortestDistance) {
+            shortestDistance = distance;
+            shortestPath = path;
+          }
+        }
+
+        return shortestPath;
+      };
+
+      function getPermutations(arr) {
+        if (arr.length <= 1) {
+          return [arr];
+        }
+
+        var permutations = [];
+
+        for (var i = 0; i < arr.length; i++) {
+          var rest = arr.slice(0, i).concat(arr.slice(i + 1));
+          var restPermutations = getPermutations(rest);
+
+          for (var j = 0; j < restPermutations.length; j++) {
+            permutations.push([arr[i]].concat(restPermutations[j]));
+          }
+        }
+
+        return permutations;
+      }
+
+      function calculatePathDistance(path) {
+        var distance = 0;
+
+        for (var i = 0; i < path.length - 1; i++) {
+          distance += path[i].distanceTo(path[i + 1]);
+        }
+
+        return distance;
+      }
+    }
+  </script>
+</body>
+</html>
