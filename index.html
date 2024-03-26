@@ -55,30 +55,16 @@
 <div class="container">
     <img src="IMG_7036.jpg" alt="Ori Fogler" class="profile-img" width="200">
     <p>My name is Ori Fogler and I am an Algo Researcher at <a href="https://www.viavan.com/">Via Transportation</a>.</p>
-    <p>Find me on LinkedIn: <a href="https://www.linkedin.com/in/foglero/">LinkedIn Profile</a></p>
     <p>Contact me at: <a href="mailto:foglerori@gmail.com" class="email-link">foglerori@gmail.com</a></p>
+    
+    <p>Find me on LinkedIn: <a href="https://www.linkedin.com/in/foglero/">LinkedIn Profile</a></p>
+    
     <a href="fogler-resume-en.pdf" class="resume-link" download>Download Resume (PDF)</a>
     <a href="fogler-resume-en.docx" class="resume-link" download>Download Resume (WORD)</a>
+    
     <p>Check out my blog: <a href="https://hagigey.blogspot.com/" class="blog-link">Hagigey Blog</a></p>
-    <div id="blog-post"></div>
-    <iframe src="https://hagigey.blogspot.com/2022/10/blog-post.html" width="100%" height="600" frameborder="0"></iframe>
+    <iframe src="https://hagigey.blogspot.com/2022/10/blog-post.html" width="400" height="300" frameborder="0"></iframe>
 </div>
-
-<script>
-    // Fetch the specific blog post content
-    fetch('https://hagigey.blogspot.com/2022/10/blog-post.html')
-    .then(response => response.text())
-    .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-        const postContent = doc.querySelector('.post-body');
-        document.getElementById('blog-post').appendChild(postContent);
-    })
-    .catch(error => {
-        console.error('Error fetching blog post:', error);
-        document.getElementById('blog-post').innerHTML = '<p>Error fetching blog post. Please try again later.</p>';
-    });
-</script>
-
+    
 </body>
 </html>
