@@ -4,36 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ori Fogler</title>
-    <link rel="icon" href="IMG_7036.jpg" type="image/jpeg"> <!-- Specify the path to your image and its type -->
+    <link rel="icon" href="IMG_7036.jpg" type="image/jpeg"> <!-- Favicon -->
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         header {
             background-color: #333;
             color: #fff;
             padding: 20px;
+            width: 100%;
         }
         h1 {
             margin: 0;
         }
         .container {
-            width: 80%; /* Set the width of the container */
-            margin: 20px auto; /* Center the container horizontally */
-            padding: 0 20px;
+            width: 80%;
+            padding: 20px;
             text-align: left;
         }
         .blog-link, .email-link {
             color: #007bff;
         }
         .profile-img {
-            max-width: 100%; /* Ensure the image doesn't exceed the container width */
-            height: auto; /* Maintain the aspect ratio */
-            border-radius: 50%; /* Rounded corners for circular image */
+            max-width: 100%;
+            height: auto;
+            border-radius: 50%;
             margin-bottom: 20px;
+        }
+        .resume-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -44,14 +57,13 @@
 </header>
 
 <div class="container">
-    <img src="IMG_7036.jpg" alt="Ori Fogler" class="profile-img" width="200"> <!-- Adjust the width attribute as needed -->
+    <img src="IMG_7036.jpg" alt="Ori Fogler" class="profile-img" width="200">
     <p>Welcome to my homepage! My name is Ori Fogler.</p>
-    <p>Contact me at: <a href="mailto:foglerori@gmail.com" class="email-link">foglerori@gmail.com</a></p>
     <p>Find me on LinkedIn: <a href="https://www.linkedin.com/in/foglero/">LinkedIn Profile</a></p>
     <p>Check out my blog: <a href="https://hagigey.blogspot.com/" class="blog-link">Hagigey Blog</a></p>
-    <a href="fogler-resume-en.pdf" class="resume-link" download>Download Resume (PDF)</a> <!-- Resume link with download attribute -->
-    <a href="fogler-resume-en.docx" class="resume-link" download>Download Resume (WORD)</a> <!-- Resume link with download attribute -->
+    <p>Contact me at: <a href="mailto:foglerori@gmail.com" class="email-link">foglerori@gmail.com</a></p>
     <div id="blog-post"></div>
+    <a href="fogler-resume-en.pdf" class="resume-link" download>Download Resume (PDF)</a>
 </div>
 
 <script>
