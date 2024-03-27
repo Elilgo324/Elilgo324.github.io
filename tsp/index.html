@@ -6,17 +6,25 @@
   <title>Petah Tikva Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
+    #map-container {
+      position: relative;
+    }
+
     #map {
       height: 600px;
+      width: 100%;
     }
 
     .input-container {
+      position: absolute;
+      top: 10px; /* Adjust as needed */
+      left: 10px; /* Adjust as needed */
       width: 20%;
-      margin: 0 auto;
       padding: 20px;
       background-color: #f0f0f0;
       border-radius: 10px;
       text-align: center;
+      z-index: 1000; /* Ensure it appears above the map */
     }
 
     label {
@@ -49,7 +57,7 @@
   </style>
 </head>
 <body>
-    <div class="container">
+    <div id="map-container">
       <div class="input-container">
         <label for="numPoints">Number of Points:</label>
         <input type="number" id="numPoints" min="1" value="10">
@@ -61,7 +69,10 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    var map = L.map('map').setView([32.0886, 34.885], 13);
+    var map = L.map('map', {
+      maxZoom: 13, // Set the maximum zoom level
+      minZoom: 13  // Set the minimum zoom level
+    }).setView([32.0886, 34.885], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
