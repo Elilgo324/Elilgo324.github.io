@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .shift {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .previous {
+            background-color: #d1c4e9;
+            color: #4527a0;
+        }
+        .current {
+            background-color: #ffeb3b;
+            color: #795548;
+        }
+        .next {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Shift Schedule</h2>
+        <div id="shift-container"></div>
+    </div>
+
+    <script>
+        const shifts = [
+            { period: "2/3 - 7/3", person: "@amitai.netser" },
+            { period: "9/3 - 14/3", person: "@ori.fogler" },
+            { period: "16/3 - 21/3", person: "@Yagil Engel" },
+            { period: "23/3 - 28/3", person: "@tom.ferster" },
+            { period: "30/3 - 4/4", person: "@amitai.netser" },
+            { period: "6/4 - 11/4", person: "@ori.fogler" },
+            { period: "13/4 - 18/4", person: "@Yagil Engel" },
+            { period: "20/4 - 25/4", person: "@tom.ferster" },
+            { period: "27/4 - 2/5", person: "@amitai.netser" },
+            { period: "4/5 - 9/5", person: "@ori.fogler" },
+            { period: "11/5 - 16/5", person: "@Yagil Engel" },
+            { period: "18/5 - 23/5", person: "@tom.ferster" },
+            { period: "25/5 - 30/5", person: "@amitai.netser" },
+            { period: "1/6 - 6/6", person: "@ori.fogler" },
+            { period: "8/6 - 13/6", person: "@Yagil Engel" },
+            { period: "15/6 - 20/6", person: "@tom.ferster" },
+            { period: "22/6 - 27/6", person: "@amitai.netser" },
+            { period: "29/6 - 4/7", person: "@ori.fogler" },
+            { period: "6/7 - 11/7", person: "@Yagil Engel" },
+            { period: "13/7 - 18/7", person: "@tom.ferster" },
+            { period: "20/7 - 25/7", person: "@amitai.netser" },
+            { period: "27/7 - 1/8", person: "@ori.fogler" },
+            { period: "3/8 - 8/8", person: "@Yagil Engel" },
+            { period: "10/8 - 15/8", person: "@tom.ferster" },
+            { period: "17/8 - 22/8", person: "@amitai.netser" },
+            { period: "24/8 - 29/8", person: "@ori.fogler" },
+            { period: "31/8 - 5/9", person: "@Yagil Engel" },
+            { period: "7/9 - 12/9", person: "@tom.ferster" },
+            { period: "14/9 - 19/9", person: "@amitai.netser" },
+            { period: "21/9 - 26/9", person: "@ori.fogler" },
+            { period: "28/9 - 3/10", person: "@Yagil Engel" },
+            { period: "5/10 - 10/10", person: "@tom.ferster" },
+            { period: "12/10 - 17/10", person: "@amitai.netser" },
+            { period: "19/10 - 24/10", person: "@ori.fogler" },
+            { period: "26/10 - 31/10", person: "@Yagil Engel" }
+        ];
+
+        const currentIndex = shifts.findIndex(({ period }) => {
+            const today = new Date();
+            const [start, end] = period.split(' - ').map(dateStr => {
+                const [day, month] = dateStr.split('/');
+                return new Date(today.getFullYear(), month - 1, day);
+            });
+            return today >= start && today <= end;
+        });
+
+        let displayShifts = "";
+        if (currentIndex > 0) {
+            displayShifts += `<div class='shift previous'>Previous Week: <b>${shifts[currentIndex - 1].period}</b><br>${shifts[currentIndex - 1].person}</div>`;
+        }
+        if (currentIndex >= 0) {
+            displayShifts += `<div class='shift current'>Current Week: <b>${shifts[currentIndex].period}</b><br>${shifts[currentIndex].person}</div>`;
+        }
+        if (currentIndex < shifts.length - 1) {
+            displayShifts += `<div class='shift next'>Next Week: <b>${shifts[currentIndex + 1].period}</b><br>${shifts[currentIndex + 1].person}</div>`;
+        }
+
+        document.getElementById("shift-container").innerHTML = displayShifts;
+    </script>
+</body>
+</html>
