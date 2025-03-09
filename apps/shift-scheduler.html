@@ -17,6 +17,30 @@
             font-size: 3em;
             margin-bottom: 40px;
         }
+        .date-selector {
+            margin: 20px 0;
+            padding: 20px;
+        }
+        .date-selector input {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .date-selector button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .date-selector button:hover {
+            background-color: #45a049;
+        }
         .shift-container {
             display: flex;
             justify-content: space-around;
@@ -66,19 +90,32 @@
 </head>
 <body>
     <h1>Global Solvers Shift Schedule</h1>
+    <div class="date-selector">
+        <input type="date" id="dateSelector">
+        <button onclick="updateDisplayForSelectedDate()">Show Shifts</button>
+    </div>
     <div class="shift-container" id="shiftDisplay"></div>
 
     <script>
         const people = [
+            "@yagil.Engel",
+            "@tom.ferster",
             "@amitai.netser",
-            "@ori.fogler",
-            "@yagil Engel",
-            "@tom.ferster"
+            "@ori.fogler"
         ];
 
-        function getShiftPeople() {
-            // Find current person (ori.fogler)
-            const currentIndex = people.findIndex(person => person === "@ori.fogler");
+        // Set default date to today
+        document.getElementById('dateSelector').valueAsDate = new Date();
+
+        function getWeekNumber(date) {
+            const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+            const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+            return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+        }
+
+        function getShiftPeople(date) {
+            const weekNumber = getWeekNumber(date);
+            const currentIndex = weekNumber % people.length;
 
             return {
                 previous: people[(currentIndex - 1 + people.length) % people.length],
@@ -87,10 +124,9 @@
             };
         }
 
-        function formatDateRange() {
-            const today = new Date();
-            const sunday = new Date(today);
-            sunday.setDate(today.getDate() - today.getDay());
+        function formatDateRange(selectedDate) {
+            const sunday = new Date(selectedDate);
+            sunday.setDate(selectedDate.getDate() - selectedDate.getDay());
             const friday = new Date(sunday);
             friday.setDate(sunday.getDate() + 5);
 
@@ -105,9 +141,14 @@
             return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
         }
 
-        function updateDisplay() {
-            const shifts = getShiftPeople();
-            const dates = formatDateRange();
+        function updateDisplayForSelectedDate() {
+            const selectedDate = new Date(document.getElementById('dateSelector').value);
+            updateDisplay(selectedDate);
+        }
+
+        function updateDisplay(date = new Date()) {
+            const shifts = getShiftPeople(date);
+            const dates = formatDateRange(date);
             const html = `
                 <div class="shift-box previous">
                     <div class="date">Previous Week<br>${dates.previous}</div>
@@ -129,7 +170,7 @@
         updateDisplay();
 
         // Update every minute (in case day changes)
-        setInterval(updateDisplay, 60000);
+        setInterval(() => updateDisplay(), 60000);
     </script>
 </body>
 </html>
